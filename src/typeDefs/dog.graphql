@@ -1,0 +1,7 @@
+type Dog {
+  id: ID!
+  name: String!
+  breed: String!
+  age: Int!
+  owner: User!
+}

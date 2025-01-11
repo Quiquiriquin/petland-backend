@@ -1,0 +1,38 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc",
+    "start": "npm run compile && nodemon node ./dist/index.js",
+    "start:dev": "tsx watch \"src/index.ts\" --include \"src/typeDefs/**/*\"",
+    "codegen": "graphql-codegen --config codegen.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "module",
+  "dependencies": {
+    "@apollo/server": "^4.11.3",
+    "@graphql-tools/graphql-file-loader": "^8.0.11",
+    "@graphql-tools/load": "^8.0.12",
+    "@graphql-tools/load-files": "^7.0.0",
+    "@graphql-tools/schema": "^10.0.16",
+    "config": "^3.3.12",
+    "graphql": "^16.10.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/add": "^5.0.3",
+    "@graphql-codegen/cli": "5.0.3",
+    "@graphql-codegen/fragment-matcher": "^5.0.2",
+    "@graphql-codegen/introspection": "^4.0.3",
+    "@graphql-codegen/typescript": "4.1.2",
+    "@graphql-codegen/typescript-resolvers": "4.4.1",
+    "@types/node": "^22.10.5",
+    "nodemon": "^3.1.9",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
