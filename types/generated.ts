@@ -34,6 +34,16 @@ export type Dog = {
   owner: User;
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  createUser: User;
+};
+
+
+export type MutationCreateUserArgs = {
+  input?: InputMaybe<UserInput>;
+};
+
 export type Query = {
   __typename?: 'Query';
   user?: Maybe<Scalars['String']['output']>;
@@ -42,7 +52,11 @@ export type Query = {
 export type User = {
   __typename?: 'User';
   email: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
+  id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
-  password: Scalars['String']['output'];
+};
+
+export type UserInput = {
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
 };

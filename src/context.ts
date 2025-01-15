@@ -1,11 +1,19 @@
+import { DataSources } from "./dataSources";
+import { EmailHandler } from "./dataSources/email.datasource";
+import { PrismaDatasource } from "./dataSources/prismaDatasource";
+
 export type ApolloBaseContext = {};
 
 export interface Context extends ApolloBaseContext {
-  hola: string;
+  dataSources: DataSources;
 }
 
 export default async function context(): Promise<Context> {
-  return {
-    hola: "world",
+  const result: Context = {
+    dataSources: {
+      prismaDatasource: new PrismaDatasource(),
+      mailer: new EmailHandler(),
+    },
   };
+  return result;
 }

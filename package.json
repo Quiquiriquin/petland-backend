@@ -20,7 +20,12 @@
     "@graphql-tools/load": "^8.0.12",
     "@graphql-tools/load-files": "^7.0.0",
     "@graphql-tools/schema": "^10.0.16",
+    "@prisma/client": "^6.2.1",
+    "@sendgrid/mail": "^8.1.4",
+    "body-parser": "^1.20.3",
     "config": "^3.3.12",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "graphql": "^16.10.0"
   },
   "devDependencies": {
@@ -32,7 +37,11 @@
     "@graphql-codegen/typescript-resolvers": "4.4.1",
     "@types/node": "^22.10.5",
     "nodemon": "^3.1.9",
+    "prisma": "^6.2.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
+  },
+  "prisma": {
+    "schema": "./prisma"
   }
 }
