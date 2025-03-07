@@ -1,6 +1,5 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
-import { startStandaloneServer } from "@apollo/server/standalone";
 import { prepareSchema } from "./utils/schema";
 import express from "express";
 import { createServer } from "http";

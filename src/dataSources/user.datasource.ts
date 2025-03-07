@@ -1,25 +1,46 @@
 import { Context } from "../context";
 import { UserInput } from "../../types/generated";
-import { User } from "../schema.generated";
+import { UserRole } from "@prisma/client";
+import { db } from "./db.dataSource";
+import { User } from "../db/types";
+import { Selectable } from "kysely";
 
 export class UserDatasource {
-  async create(args: UserInput, context: Context): Promise<User> {
+  async create(args: UserInput, context: Context): Promise<Selectable<User>> {
     try {
-      const newUser =
-        await context.dataSources.prismaDatasource.prisma.user.create({
-          data: {
-            email: args.email,
-            name: args.name,
-          },
-        });
-      context.dataSources.mailer.sendEmail(
-        newUser.email,
-        "Welcome",
-        "Welcome to our platform"
-      );
+      const { email, name, lastName, password } = args;
+      const data = {
+        email,
+        name,
+        lastName,
+        password,
+        role: UserRole.USER, // or map accordingly
+        updatedAt: new Date(),
+      };
+      const newUser = await db
+        .insertInto("User")
+        .values(data)
+        .returningAll()
+        .executeTakeFirst();
+
+      if (!newUser) {
+        throw new Error("User not created");
+      }
+
+      // context.dataSources?.mailer?.sendEmail(
+      //   newUser?.email,
+      //   "Welcome",
+      //   "Welcome to our platform"
+      // );
+
       return newUser;
     } catch (e) {
-      throw new Error(e);
+      console.log(e);
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      } else {
+        throw new Error(String(e));
+      }
     }
   }
 }

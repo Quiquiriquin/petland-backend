@@ -1,6 +1,66 @@
 model Dog {
-    id    Int    @id @default(autoincrement())
-    name  String
-    age   Int
-    breed String
+  id        Int       @id @default(autoincrement())
+  name      String
+  age       Int
+  userId    Int?
+  breed     DogBreed?
+  owner     User?     @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  photo     String?
+}
+
+enum DogBreed {
+  LABRADOR_RETRIEVER
+  GERMAN_SHEPHERD
+  GOLDEN_RETRIEVER
+  FRENCH_BULLDOG
+  BULLDOG
+  POODLE
+  BEAGLE
+  ROTTWEILER
+  GERMAN_SHORT_HAIRED_POINTER
+  YORKSHIRE_TERRIER
+  BOXER
+  DACHSHUND
+  SIBERIAN_HUSKY
+  DOBERMAN_PINSCHER
+  GREAT_DANE
+  AUSTRALIAN_SHEPHERD
+  CAVALIER_KING_CHARLES_SPANIEL
+  SHIH_TZU
+  BOSTON_TERRIER
+  POMERANIAN
+  HAVANESE
+  SHETLAND_SHEEPDOG
+  BRITTANY
+  ENGLISH_SPRINGER_SPANIEL
+  MINIATURE_SCHNAUZER
+  BORDER_COLLIE
+  CATAHOULA_LEOPARD_DOG
+  SAINT_BERNARD
+  CHIHUAHUA
+  AKITA
+  STAFFORDSHIRE_BULL_TERRIER
+  BASSET_HOUND
+  VIZSLA
+  WEIMARANER
+  MALTESE
+  NEWFOUNDLAND
+  COLLIE
+  BULL_TERRIER
+  RHODESIAN_RIDGEBACK
+  BICHON_FRISE
+  PUG
+  BELGIAN_MALINOIS
+  COCKER_SPANIEL
+  CHOW_CHOW
+  ALASKAN_MALAMUTE
+  WHIPPET
+  SCHNAUZER
+  AIREDALE_TERRIER
+  SCOTTISH_TERRIER
+  IRISH_SETTER
+  SAMOYED
+  OTHER
 }

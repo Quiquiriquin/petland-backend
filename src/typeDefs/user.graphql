@@ -1,7 +1,23 @@
-type User {
+scalar Date
+
+enum UserRole {
+  ADMIN
+  USER
+  OWNER
+}
+
+type GqlUser {
   id: Int!
   name: String!
   email: String!
+  lastName: String!
+  birthDate: Date
+  createdAt: Date!
+  updatedAt: Date!
+  role: UserRole!
+  gender: String
+  password: String
+  dogs: [GqlDog]
 }
 
 type Query {
@@ -9,10 +25,12 @@ type Query {
 }
 
 type Mutation {
-  createUser(input: UserInput): User!
+  createUser(input: UserInput!): GqlUser!
 }
 
 input UserInput {
   name: String!
+  lastName: String!
   email: String!
+  password: String!
 }

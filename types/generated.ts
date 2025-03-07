@@ -23,40 +23,133 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  Date: { input: any; output: any; }
 };
 
-export type Dog = {
-  __typename?: 'Dog';
+export enum DogBreed {
+  AiredaleTerrier = 'AIREDALE_TERRIER',
+  Akita = 'AKITA',
+  AlaskanMalamute = 'ALASKAN_MALAMUTE',
+  AustralianShepherd = 'AUSTRALIAN_SHEPHERD',
+  BassetHound = 'BASSET_HOUND',
+  Beagle = 'BEAGLE',
+  BelgianMalinois = 'BELGIAN_MALINOIS',
+  BichonFrise = 'BICHON_FRISE',
+  BorderCollie = 'BORDER_COLLIE',
+  BostonTerrier = 'BOSTON_TERRIER',
+  Boxer = 'BOXER',
+  Brittany = 'BRITTANY',
+  Bulldog = 'BULLDOG',
+  BullTerrier = 'BULL_TERRIER',
+  CatahoulaLeopardDog = 'CATAHOULA_LEOPARD_DOG',
+  CavalierKingCharlesSpaniel = 'CAVALIER_KING_CHARLES_SPANIEL',
+  Chihuahua = 'CHIHUAHUA',
+  ChowChow = 'CHOW_CHOW',
+  CockerSpaniel = 'COCKER_SPANIEL',
+  Collie = 'COLLIE',
+  Dachshund = 'DACHSHUND',
+  DobermanPinscher = 'DOBERMAN_PINSCHER',
+  EnglishSpringerSpaniel = 'ENGLISH_SPRINGER_SPANIEL',
+  FrenchBulldog = 'FRENCH_BULLDOG',
+  GermanShepherd = 'GERMAN_SHEPHERD',
+  GermanShortHairedPointer = 'GERMAN_SHORT_HAIRED_POINTER',
+  GoldenRetriever = 'GOLDEN_RETRIEVER',
+  GreatDane = 'GREAT_DANE',
+  Havanese = 'HAVANESE',
+  IrishSetter = 'IRISH_SETTER',
+  LabradorRetriever = 'LABRADOR_RETRIEVER',
+  Maltese = 'MALTESE',
+  MiniatureSchnauzer = 'MINIATURE_SCHNAUZER',
+  Newfoundland = 'NEWFOUNDLAND',
+  Other = 'OTHER',
+  Pomeranian = 'POMERANIAN',
+  Poodle = 'POODLE',
+  Pug = 'PUG',
+  RhodesianRidgeback = 'RHODESIAN_RIDGEBACK',
+  Rottweiler = 'ROTTWEILER',
+  SaintBernard = 'SAINT_BERNARD',
+  Samoyed = 'SAMOYED',
+  Schnauzer = 'SCHNAUZER',
+  ScottishTerrier = 'SCOTTISH_TERRIER',
+  ShetlandSheepdog = 'SHETLAND_SHEEPDOG',
+  ShihTzu = 'SHIH_TZU',
+  SiberianHusky = 'SIBERIAN_HUSKY',
+  StaffordshireBullTerrier = 'STAFFORDSHIRE_BULL_TERRIER',
+  Vizsla = 'VIZSLA',
+  Weimaraner = 'WEIMARANER',
+  Whippet = 'WHIPPET',
+  YorkshireTerrier = 'YORKSHIRE_TERRIER'
+}
+
+export type DogInput = {
+  age: Scalars['Int']['input'];
+  breed: DogBreed;
+  name: Scalars['String']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+export type GqlDog = {
+  __typename?: 'GqlDog';
   age: Scalars['Int']['output'];
-  breed: Scalars['String']['output'];
+  breed: DogBreed;
+  createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  owner: User;
+  owner?: Maybe<GqlUser>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type GqlUser = {
+  __typename?: 'GqlUser';
+  birthDate?: Maybe<Scalars['Date']['output']>;
+  createdAt: Scalars['Date']['output'];
+  dogs?: Maybe<Array<Maybe<GqlDog>>>;
+  email: Scalars['String']['output'];
+  gender?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  lastName: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  password?: Maybe<Scalars['String']['output']>;
+  role: UserRole;
+  updatedAt: Scalars['Date']['output'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createUser: User;
+  createDog: GqlDog;
+  createUser: GqlUser;
+};
+
+
+export type MutationCreateDogArgs = {
+  input: DogInput;
 };
 
 
 export type MutationCreateUserArgs = {
-  input?: InputMaybe<UserInput>;
+  input: UserInput;
 };
 
 export type Query = {
   __typename?: 'Query';
   user?: Maybe<Scalars['String']['output']>;
+  userDogs?: Maybe<Array<Maybe<GqlDog>>>;
 };
 
-export type User = {
-  __typename?: 'User';
-  email: Scalars['String']['output'];
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
+
+export type QueryUserDogsArgs = {
+  userId: Scalars['ID']['input'];
 };
 
 export type UserInput = {
   email: Scalars['String']['input'];
+  lastName: Scalars['String']['input'];
   name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
+
+export enum UserRole {
+  Admin = 'ADMIN',
+  Owner = 'OWNER',
+  User = 'USER'
+}

@@ -1,4 +1,4 @@
-import { DataSources } from "./dataSources";
+import dataSources, { DataSources } from "./dataSources";
 import { EmailHandler } from "./dataSources/email.datasource";
 import { PrismaDatasource } from "./dataSources/prismaDatasource";
 
@@ -13,6 +13,7 @@ export default async function context(): Promise<Context> {
     dataSources: {
       prismaDatasource: new PrismaDatasource(),
       mailer: new EmailHandler(),
+      dogs: new dataSources.dogs(),
     },
   };
   return result;

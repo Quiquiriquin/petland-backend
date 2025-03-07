@@ -7,7 +7,7 @@
     "compile": "tsc",
     "start": "npm run compile && nodemon node ./dist/index.js",
     "start:dev": "tsx watch \"src/index.ts\" --include \"src/typeDefs/**/*\"",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "rm -f ./src/schema.generated.ts && graphql-codegen --config codegen.ts"
   },
   "keywords": [],
   "author": "",
@@ -22,11 +22,15 @@
     "@graphql-tools/schema": "^10.0.16",
     "@prisma/client": "^6.2.1",
     "@sendgrid/mail": "^8.1.4",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "config": "^3.3.12",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "graphql": "^16.10.0"
+    "graphql": "^16.10.0",
+    "kysely": "^0.27.6",
+    "pg": "^8.13.3",
+    "prisma-kysely": "^1.8.0"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^5.0.3",
@@ -35,7 +39,9 @@
     "@graphql-codegen/introspection": "^4.0.3",
     "@graphql-codegen/typescript": "4.1.2",
     "@graphql-codegen/typescript-resolvers": "4.4.1",
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^22.10.5",
+    "@types/pg": "^8.11.11",
     "nodemon": "^3.1.9",
     "prisma": "^6.2.1",
     "tsx": "^4.19.2",

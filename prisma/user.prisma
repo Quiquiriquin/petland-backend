@@ -1,5 +1,19 @@
 model User {
-    id    Int     @id @default(autoincrement())
-    name  String? @db.VarChar(255)
-    email String  @unique @db.VarChar(255)
+  id        Int       @id @default(autoincrement())
+  name      String?   @db.VarChar(255)
+  lastName  String?   @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
+  password  String    @db.VarChar(255)
+  gender    String?   @db.VarChar(255)
+  birthDate DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  role      UserRole  @default(USER)
+  dogs      Dog[]
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  OWNER
 }

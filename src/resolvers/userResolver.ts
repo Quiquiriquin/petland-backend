@@ -1,6 +1,8 @@
 import { Context } from "../context";
 import { UserDatasource } from "../dataSources/user.datasource";
-import { Resolvers, User, UserInput } from "../schema.generated";
+import { User } from "../db/types";
+import { GqlUser, Resolvers, UserInput } from "../schema.generated";
+import { translateUser } from "../translators/userTranslator";
 // import { User } from "@prisma/client";
 const userResolver: Resolvers = {
   Query: {
@@ -10,8 +12,12 @@ const userResolver: Resolvers = {
     },
   },
   Mutation: {
-    createUser: async (_parent, { input }, context: Context): Promise<User> => {
-      return new UserDatasource().create(input, context);
+    createUser: async (
+      _parent,
+      { input },
+      context: Context
+    ): Promise<GqlUser> => {
+      return translateUser(await new UserDatasource().create(input, context));
     },
   },
 };
