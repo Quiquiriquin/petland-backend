@@ -1,19 +1,31 @@
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String?   @db.VarChar(255)
-  lastName  String?   @db.VarChar(255)
-  email     String    @unique @db.VarChar(255)
-  password  String    @db.VarChar(255)
-  gender    String?   @db.VarChar(255)
-  birthDate DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
-  role      UserRole  @default(USER)
-  dogs      Dog[]
+    id           Int      @id @default(autoincrement())
+    email        String   @unique
+    name         String
+    lastname     String
+    gender       Gender?
+    phone        String?
+    password     String
+    role         Role     @default(USER)
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    dogs         Dog[]
+    company      Company? @relation("CompanyEmployees", fields: [companyId], references: [id])
+    companyId    Int?
+    ownedCompany Company? @relation("CompanyOwner")
+    clientOfId   Int?
+    clientOf     Company? @relation("CompanyClients", fields: [clientOfId], references: [id])
 }
 
-enum UserRole {
-  USER
-  ADMIN
-  OWNER
+enum Gender {
+    Male
+    Female
+    Other
+}
+
+enum Role {
+    ADMIN
+    USER
+    CLIENT
+    OWNER
 }
