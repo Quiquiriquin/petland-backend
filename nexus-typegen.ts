@@ -15,13 +15,18 @@ declare global {
 
 export interface NexusGenInputs {
   CreateUserInput: { // input type
+    email: string; // String!
+    password: string; // String!
+  }
+  UpdateUserInput: { // input type
     clientOfId?: number | null; // Int
     companyId?: number | null; // Int
-    email: string; // String!
-    gender: NexusGenEnums['Gender']; // Gender!
-    lastname: string; // String!
-    name: string; // String!
-    password: string; // String!
+    email?: string | null; // String
+    gender?: NexusGenEnums['Gender'] | null; // Gender
+    id?: number | null; // Int
+    lastname?: string | null; // String
+    name?: string | null; // String
+    password?: string | null; // String
     phone?: string | null; // String
   }
 }
@@ -73,9 +78,9 @@ export interface NexusGenObjects {
     email: string; // String!
     gender?: NexusGenEnums['Gender'] | null; // Gender
     id?: string | null; // ID
-    lastname: string; // String!
-    name: string; // String!
-    password?: string | null; // String
+    lastname?: string | null; // String
+    name?: string | null; // String
+    password: string; // String!
     phone?: string | null; // String
     role?: NexusGenEnums['Role'] | null; // Role
   }
@@ -142,10 +147,10 @@ export interface NexusGenFieldTypes {
     email: string; // String!
     gender: NexusGenEnums['Gender'] | null; // Gender
     id: string | null; // ID
-    lastname: string; // String!
-    name: string; // String!
+    lastname: string | null; // String
+    name: string | null; // String
     ownedCompany: NexusGenRootTypes['Company'] | null; // Company
-    password: string | null; // String
+    password: string; // String!
     phone: string | null; // String
     role: NexusGenEnums['Role'] | null; // Role
   }

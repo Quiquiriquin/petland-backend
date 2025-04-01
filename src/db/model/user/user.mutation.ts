@@ -9,11 +9,20 @@ export const CreateUserInput = inputObjectType({
   name: "CreateUserInput",
   definition(t) {
     t.nonNull.string("email");
-    t.nonNull.string("name");
-    t.nonNull.string("lastname");
-    t.nonNull.field("gender", { type: GenderEnum });
-    t.string("phone");
     t.nonNull.string("password");
+  },
+});
+
+export const UpdateUserInput = inputObjectType({
+  name: "UpdateUserInput",
+  definition(t) {
+    t.string("email");
+    t.string("name");
+    t.string("lastname");
+    t.int("id");
+    t.field("gender", { type: GenderEnum });
+    t.string("phone");
+    t.string("password");
     t.int("companyId");
     t.int("clientOfId");
   },

@@ -5,12 +5,12 @@ export const UserType = objectType({
   definition(t) {
     t.id("id");
     t.nonNull.string("email");
-    t.nonNull.string("name");
-    t.nonNull.string("lastname");
+    t.string("name");
+    t.string("lastname");
     t.field("role", { type: RoleEnum });
     t.field("gender", { type: GenderEnum });
     t.string("phone");
-    t.string("password");
+    t.nonNull.string("password");
     t.field("dogs", {
       type: "Dog",
       resolve(root, args, ctx) {
