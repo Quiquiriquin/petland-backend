@@ -11,4 +11,5 @@ model Company {
     ownerId   Int      @unique
     employees User[]   @relation("CompanyEmployees")
     clients   User[]   @relation("CompanyClients")
+    alumni    Dog[]    @relation("CompanyAlumni")
 }

@@ -9,6 +9,8 @@ export const DogType = objectType({
     t.nonNull.int("age");
     t.field("size", { type: SizeEnum });
     t.nonNull.int("ownerId");
+    t.string("imageUrl");
+    t.string("notes");
     t.field("owner", {
       type: "User",
       resolve(root, args, ctx) {

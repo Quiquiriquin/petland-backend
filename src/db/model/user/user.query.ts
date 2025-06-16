@@ -1,5 +1,8 @@
 import { extendType } from "nexus";
-import { getUserDogs } from "../../../resolvers/user.resolver";
+import {
+  getUserDogs,
+  getUserInformation,
+} from "../../../resolvers/user.resolver";
 
 export const UserQuery = extendType({
   type: "Query",
@@ -7,18 +10,6 @@ export const UserQuery = extendType({
     t.list.field("users", {
       type: "User",
       resolve: (_, a, ctx) => ctx.prisma.user.findMany(),
-    });
-    t.list.field("user", {
-      type: "User",
-      args: {
-        id: "ID",
-      },
-      resolve: (_, { id }, ctx) =>
-        ctx.prisma.user.findMany({
-          where: {
-            id: id,
-          },
-        }),
     });
   },
 });
@@ -32,6 +23,16 @@ export const UserDogs = extendType({
         userId: "Int",
       },
       resolve: getUserDogs,
+    });
+  },
+});
+
+export const User = extendType({
+  type: "Query",
+  definition(t) {
+    t.field("user", {
+      type: "User",
+      resolve: getUserInformation,
     });
   },
 });

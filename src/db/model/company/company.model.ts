@@ -13,6 +13,15 @@ export const CompanyType = objectType({
     t.nonNull.string("phone");
     t.int("addressId");
     t.nonNull.int("ownerId");
+    t.field("address", {
+      type: "Address",
+      resolve: (root, args, ctx) =>
+        ctx.prisma.address.findUnique({
+          where: {
+            id: root.addressId,
+          },
+        }),
+    });
     t.field("owner", {
       type: "User",
       resolve: (root, args, ctx) =>

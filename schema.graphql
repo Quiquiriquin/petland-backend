@@ -24,7 +24,13 @@ type Address {
   zipCode: String
 }
 
+type AuthResponse {
+  accessToken: String
+  refreshToken: String
+}
+
 type Company {
+  address: Address
   addressId: Int
   clients: User
   employees: User
@@ -35,19 +41,32 @@ type Company {
   phone: String!
 }
 
+input CreatePreUserInput {
+  email: String!
+  howManyDogs: Int
+  phone: String!
+}
+
 input CreateUserInput {
   email: String!
   password: String!
+  role: Role
 }
 
 type Dog {
   age: Int!
   breed: String!
   id: ID
+  imageUrl: String
   name: String!
+  notes: String
   owner: User
   ownerId: Int!
   size: Size
+}
+
+input FindEmailInput {
+  email: String!
 }
 
 """User gender"""
@@ -60,13 +79,25 @@ enum Gender {
 type Mutation {
   addDogToUser(dogId: Int, userId: Int): User
   createDog(age: Int, breed: String, name: String, ownerId: Int, size: Size): Dog
+  createPreUser(input: CreatePreUserInput): PreUser
   createUser(input: CreateUserInput): User
+  signUser(input: CreateUserInput): AuthResponse
+  updateUser(input: UpdateUserInput): User
+  verifyIfEmailExists(input: FindEmailInput): User
+}
+
+type PreUser {
+  email: String!
+  howManyDogs: Int
+  id: ID
+  phone: String
 }
 
 type Query {
+  companyDogs(companyId: Int, search: String): [Dog]
   dogById(id: Int): Dog
   dogs(id: Int): [Dog]
-  user(id: ID): [User]
+  user: User
   userDogs(userId: Int): [Dog]
   users: [User]
 }
@@ -91,7 +122,6 @@ input UpdateUserInput {
   companyId: Int
   email: String
   gender: Gender
-  id: Int
   lastname: String
   name: String
   password: String
@@ -106,6 +136,7 @@ type User {
   dogs: Dog
   email: String!
   gender: Gender
+  howManyDogs: Int
   id: ID
   lastname: String
   name: String
@@ -113,4 +144,14 @@ type User {
   password: String!
   phone: String
   role: Role
+  status: UserStatus
+}
+
+"""User status"""
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+  DELETED
+  INACTIVE
+  INCOMPLETE
 }

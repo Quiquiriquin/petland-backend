@@ -11,3 +11,21 @@ export const getDogById = async (
     },
   });
 };
+
+export const getCompanyDogs = async (
+  _: unknown,
+  { companyId, search }: { companyId: string; search?: string },
+  ctx: Context
+) => {
+  return await ctx.prisma.dog.findMany({
+    where: {
+      companyId: parseInt(companyId),
+      ...(search && {
+        name: {
+          contains: search,
+          mode: "insensitive",
+        },
+      }),
+    },
+  });
+};

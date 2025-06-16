@@ -1,0 +1,8 @@
+model PreUser {
+    id          Int      @id @default(autoincrement())
+    email       String   @unique
+    phone       String
+    howManyDogs Int?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}

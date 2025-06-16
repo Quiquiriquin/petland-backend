@@ -7,7 +7,7 @@ import { createServer } from "http";
 import { AddressInfo } from "net";
 import { createContext } from "./context";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
-
+import cors from "cors";
 const app = express();
 const httpServer = createServer(app);
 const server = new ApolloServer({
@@ -17,13 +17,13 @@ const server = new ApolloServer({
 });
 
 await server.start();
-
+app.use(cors());
 app.use(
   "/graphql",
   express.json(),
   // @ts-expect-error known express type conflict
   expressMiddleware(server, {
-    context: (async) => createContext(),
+    context: ({ req }) => createContext(req),
   }) as express.RequestHandler
 );
 

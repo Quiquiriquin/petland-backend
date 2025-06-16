@@ -9,8 +9,8 @@ export const Address = objectType({
     t.string("city", { description: "City of the address" });
     t.string("state", { description: "State of the address" });
     t.string("zipCode", { description: "Postal code of the address" });
-    t.int("companyId");
-    t.field("company", {
+    t.nullable.int("companyId");
+    t.nullable.field("company", {
       type: "Company",
       resolve(root, args, ctx) {
         return ctx.prisma.company.findUnique({

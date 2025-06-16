@@ -7,5 +7,5 @@ model Address {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     company   Company? @relation(fields: [companyId], references: [id])
-    companyId Int      @unique
+    companyId Int?     @unique
 }

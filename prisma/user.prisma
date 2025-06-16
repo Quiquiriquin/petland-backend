@@ -1,20 +1,22 @@
 model User {
-    id           Int      @id @default(autoincrement())
-    email        String   @unique
+    id           Int        @id @default(autoincrement())
+    email        String     @unique
     name         String?
     lastname     String?
     gender       Gender?
     phone        String?
     password     String
-    role         Role     @default(USER)
-    createdAt    DateTime @default(now())
-    updatedAt    DateTime @updatedAt
+    role         Role       @default(USER)
+    createdAt    DateTime   @default(now())
+    updatedAt    DateTime   @updatedAt
     dogs         Dog[]
-    company      Company? @relation("CompanyEmployees", fields: [companyId], references: [id])
+    howManyDogs  Int?
+    company      Company?   @relation("CompanyEmployees", fields: [companyId], references: [id])
     companyId    Int?
-    ownedCompany Company? @relation("CompanyOwner")
+    ownedCompany Company?   @relation("CompanyOwner")
     clientOfId   Int?
-    clientOf     Company? @relation("CompanyClients", fields: [clientOfId], references: [id])
+    clientOf     Company?   @relation("CompanyClients", fields: [clientOfId], references: [id])
+    status       UserStatus @default(INCOMPLETE)
 }
 
 enum Gender {
@@ -28,4 +30,12 @@ enum Role {
     USER
     CLIENT
     OWNER
+}
+
+enum UserStatus {
+    INCOMPLETE
+    ACTIVE
+    INACTIVE
+    BLOCKED
+    DELETED
 }

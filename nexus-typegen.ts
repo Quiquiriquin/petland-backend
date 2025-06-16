@@ -14,16 +14,24 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  CreatePreUserInput: { // input type
+    email: string; // String!
+    howManyDogs?: number | null; // Int
+    phone: string; // String!
+  }
   CreateUserInput: { // input type
     email: string; // String!
     password: string; // String!
+    role?: NexusGenEnums['Role'] | null; // Role
+  }
+  FindEmailInput: { // input type
+    email: string; // String!
   }
   UpdateUserInput: { // input type
     clientOfId?: number | null; // Int
     companyId?: number | null; // Int
     email?: string | null; // String
     gender?: NexusGenEnums['Gender'] | null; // Gender
-    id?: number | null; // Int
     lastname?: string | null; // String
     name?: string | null; // String
     password?: string | null; // String
@@ -35,6 +43,7 @@ export interface NexusGenEnums {
   Gender: "Female" | "Male" | "Other"
   Role: "ADMIN" | "CLIENT" | "OWNER" | "USER"
   Size: "LARGE" | "MEDIUM" | "SMALL"
+  UserStatus: "ACTIVE" | "BLOCKED" | "DELETED" | "INACTIVE" | "INCOMPLETE"
 }
 
 export interface NexusGenScalars {
@@ -55,6 +64,10 @@ export interface NexusGenObjects {
     town?: string | null; // String
     zipCode?: string | null; // String
   }
+  AuthResponse: { // root type
+    accessToken?: string | null; // String
+    refreshToken?: string | null; // String
+  }
   Company: { // root type
     addressId?: number | null; // Int
     id?: string | null; // ID
@@ -66,23 +79,33 @@ export interface NexusGenObjects {
     age: number; // Int!
     breed: string; // String!
     id?: string | null; // ID
+    imageUrl?: string | null; // String
     name: string; // String!
+    notes?: string | null; // String
     ownerId: number; // Int!
     size?: NexusGenEnums['Size'] | null; // Size
   }
   Mutation: {};
+  PreUser: { // root type
+    email: string; // String!
+    howManyDogs?: number | null; // Int
+    id?: string | null; // ID
+    phone?: string | null; // String
+  }
   Query: {};
   User: { // root type
     clientOfId?: number | null; // Int
     companyId?: number | null; // Int
     email: string; // String!
     gender?: NexusGenEnums['Gender'] | null; // Gender
+    howManyDogs?: number | null; // Int
     id?: string | null; // ID
     lastname?: string | null; // String
     name?: string | null; // String
     password: string; // String!
     phone?: string | null; // String
     role?: NexusGenEnums['Role'] | null; // Role
+    status?: NexusGenEnums['UserStatus'] | null; // UserStatus
   }
 }
 
@@ -107,7 +130,12 @@ export interface NexusGenFieldTypes {
     town: string | null; // String
     zipCode: string | null; // String
   }
+  AuthResponse: { // field return type
+    accessToken: string | null; // String
+    refreshToken: string | null; // String
+  }
   Company: { // field return type
+    address: NexusGenRootTypes['Address'] | null; // Address
     addressId: number | null; // Int
     clients: NexusGenRootTypes['User'] | null; // User
     employees: NexusGenRootTypes['User'] | null; // User
@@ -121,7 +149,9 @@ export interface NexusGenFieldTypes {
     age: number; // Int!
     breed: string; // String!
     id: string | null; // ID
+    imageUrl: string | null; // String
     name: string; // String!
+    notes: string | null; // String
     owner: NexusGenRootTypes['User'] | null; // User
     ownerId: number; // Int!
     size: NexusGenEnums['Size'] | null; // Size
@@ -129,12 +159,23 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     addDogToUser: NexusGenRootTypes['User'] | null; // User
     createDog: NexusGenRootTypes['Dog'] | null; // Dog
+    createPreUser: NexusGenRootTypes['PreUser'] | null; // PreUser
     createUser: NexusGenRootTypes['User'] | null; // User
+    signUser: NexusGenRootTypes['AuthResponse'] | null; // AuthResponse
+    updateUser: NexusGenRootTypes['User'] | null; // User
+    verifyIfEmailExists: NexusGenRootTypes['User'] | null; // User
+  }
+  PreUser: { // field return type
+    email: string; // String!
+    howManyDogs: number | null; // Int
+    id: string | null; // ID
+    phone: string | null; // String
   }
   Query: { // field return type
+    companyDogs: Array<NexusGenRootTypes['Dog'] | null> | null; // [Dog]
     dogById: NexusGenRootTypes['Dog'] | null; // Dog
     dogs: Array<NexusGenRootTypes['Dog'] | null> | null; // [Dog]
-    user: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    user: NexusGenRootTypes['User'] | null; // User
     userDogs: Array<NexusGenRootTypes['Dog'] | null> | null; // [Dog]
     users: Array<NexusGenRootTypes['User'] | null> | null; // [User]
   }
@@ -146,6 +187,7 @@ export interface NexusGenFieldTypes {
     dogs: NexusGenRootTypes['Dog'] | null; // Dog
     email: string; // String!
     gender: NexusGenEnums['Gender'] | null; // Gender
+    howManyDogs: number | null; // Int
     id: string | null; // ID
     lastname: string | null; // String
     name: string | null; // String
@@ -153,6 +195,7 @@ export interface NexusGenFieldTypes {
     password: string; // String!
     phone: string | null; // String
     role: NexusGenEnums['Role'] | null; // Role
+    status: NexusGenEnums['UserStatus'] | null; // UserStatus
   }
 }
 
@@ -167,7 +210,12 @@ export interface NexusGenFieldTypeNames {
     town: 'String'
     zipCode: 'String'
   }
+  AuthResponse: { // field return type name
+    accessToken: 'String'
+    refreshToken: 'String'
+  }
   Company: { // field return type name
+    address: 'Address'
     addressId: 'Int'
     clients: 'User'
     employees: 'User'
@@ -181,7 +229,9 @@ export interface NexusGenFieldTypeNames {
     age: 'Int'
     breed: 'String'
     id: 'ID'
+    imageUrl: 'String'
     name: 'String'
+    notes: 'String'
     owner: 'User'
     ownerId: 'Int'
     size: 'Size'
@@ -189,9 +239,20 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     addDogToUser: 'User'
     createDog: 'Dog'
+    createPreUser: 'PreUser'
     createUser: 'User'
+    signUser: 'AuthResponse'
+    updateUser: 'User'
+    verifyIfEmailExists: 'User'
+  }
+  PreUser: { // field return type name
+    email: 'String'
+    howManyDogs: 'Int'
+    id: 'ID'
+    phone: 'String'
   }
   Query: { // field return type name
+    companyDogs: 'Dog'
     dogById: 'Dog'
     dogs: 'Dog'
     user: 'User'
@@ -206,6 +267,7 @@ export interface NexusGenFieldTypeNames {
     dogs: 'Dog'
     email: 'String'
     gender: 'Gender'
+    howManyDogs: 'Int'
     id: 'ID'
     lastname: 'String'
     name: 'String'
@@ -213,6 +275,7 @@ export interface NexusGenFieldTypeNames {
     password: 'String'
     phone: 'String'
     role: 'Role'
+    status: 'UserStatus'
   }
 }
 
@@ -229,19 +292,32 @@ export interface NexusGenArgTypes {
       ownerId?: number | null; // Int
       size?: NexusGenEnums['Size'] | null; // Size
     }
+    createPreUser: { // args
+      input?: NexusGenInputs['CreatePreUserInput'] | null; // CreatePreUserInput
+    }
     createUser: { // args
       input?: NexusGenInputs['CreateUserInput'] | null; // CreateUserInput
     }
+    signUser: { // args
+      input?: NexusGenInputs['CreateUserInput'] | null; // CreateUserInput
+    }
+    updateUser: { // args
+      input?: NexusGenInputs['UpdateUserInput'] | null; // UpdateUserInput
+    }
+    verifyIfEmailExists: { // args
+      input?: NexusGenInputs['FindEmailInput'] | null; // FindEmailInput
+    }
   }
   Query: {
+    companyDogs: { // args
+      companyId?: number | null; // Int
+      search?: string | null; // String
+    }
     dogById: { // args
       id?: number | null; // Int
     }
     dogs: { // args
       id?: number | null; // Int
-    }
-    user: { // args
-      id?: string | null; // ID
     }
     userDogs: { // args
       userId?: number | null; // Int

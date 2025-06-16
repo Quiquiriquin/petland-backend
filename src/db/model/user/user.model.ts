@@ -9,7 +9,9 @@ export const UserType = objectType({
     t.string("lastname");
     t.field("role", { type: RoleEnum });
     t.field("gender", { type: GenderEnum });
+    t.field("status", { type: UserStatusEnum });
     t.string("phone");
+    t.int("howManyDogs");
     t.nonNull.string("password");
     t.field("dogs", {
       type: "Dog",
@@ -56,6 +58,14 @@ export const UserType = objectType({
   },
 });
 
+export const AuthType = objectType({
+  name: "AuthResponse",
+  definition(t) {
+    t.string("accessToken");
+    t.string("refreshToken");
+  },
+});
+
 export const GenderEnum = enumType({
   name: "Gender",
   members: ["Male", "Female", "Other"],
@@ -66,4 +76,10 @@ export const RoleEnum = enumType({
   name: "Role",
   members: ["ADMIN", "USER", "CLIENT", "OWNER"],
   description: "User role",
+});
+
+export const UserStatusEnum = enumType({
+  name: "UserStatus",
+  members: ["ACTIVE", "INACTIVE", "BLOCKED", "INCOMPLETE", "DELETED"],
+  description: "User status",
 });
