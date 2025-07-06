@@ -4,6 +4,8 @@ model Dog {
     breed     String
     size      Size
     age       Int
+    weight    Float    @default(0)
+    color     String   @default("Non specified")
     imageUrl  String?
     notes     String?
     owner     User?    @relation(fields: [ownerId], references: [id])
@@ -13,6 +15,7 @@ model Dog {
 }
 
 enum Size {
+    TOY
     SMALL
     MEDIUM
     LARGE

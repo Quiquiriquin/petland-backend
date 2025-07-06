@@ -11,7 +11,7 @@ export const createUserResolver = async (
 ) => {
   try {
     let status: UserStatus = UserStatus.INCOMPLETE;
-    if (input.role === "ADMIN") {
+    if (input.role === "ADMIN" || input.role === "CLIENT") {
       status = UserStatus.ACTIVE;
     }
     const passowrd = await bcrypt.hash(input.password, 10);
@@ -23,7 +23,9 @@ export const createUserResolver = async (
       },
     });
   } catch (e) {
+    console.log(e);
     const error = e as GraphQLError;
+    console.log("Error creating user", JSON.stringify(error, null, 2));
     throw new GraphQLError(error.message);
   }
 };
@@ -33,7 +35,6 @@ export const signUserResolver = async (
   { input }: { input: { email: string; password: string } },
   ctx: Context
 ) => {
-  const { client } = ctx;
   const user = await ctx.prisma.user.findUnique({
     where: {
       email: input.email,
@@ -45,11 +46,6 @@ export const signUserResolver = async (
   const isPasswordValid = await bcrypt.compare(input.password, user.password);
   if (!isPasswordValid) {
     throw new GraphQLError("Invalid password");
-  }
-  if (user.role.toLocaleLowerCase() !== client) {
-    throw new GraphQLError(
-      `User role ${user.role} does not match client type ${client}`
-    );
   }
 
   return generateTokens(user);

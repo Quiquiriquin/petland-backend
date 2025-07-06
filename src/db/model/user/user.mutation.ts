@@ -13,7 +13,18 @@ export const CreateUserInput = inputObjectType({
   definition(t) {
     t.nonNull.string("email");
     t.nonNull.string("password");
+    t.string("name");
+    t.string("lastname");
+    t.string("phone");
     t.field("role", { type: RoleEnum });
+  },
+});
+
+export const SignInUserInput = inputObjectType({
+  name: "SignInUserInput",
+  definition(t) {
+    t.nonNull.string("email");
+    t.nonNull.string("password");
   },
 });
 
@@ -57,7 +68,7 @@ export const UserMutation = mutationField("createUser", {
 export const SignUser = mutationField("signUser", {
   type: "AuthResponse",
   args: {
-    input: CreateUserInput,
+    input: SignInUserInput,
   },
   resolve: signUserResolver,
 });

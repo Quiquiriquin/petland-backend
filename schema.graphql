@@ -39,6 +39,21 @@ type Company {
   owner: User
   ownerId: Int!
   phone: String!
+  uuid: String!
+}
+
+input CreateDogInput {
+  age: Int!
+  breed: String!
+  color: String!
+  name: String!
+  ownerId: Int!
+  size: Size!
+  weight: Float!
+}
+
+input CreateDogsInput {
+  dogs: [CreateDogInput!]!
 }
 
 input CreatePreUserInput {
@@ -49,13 +64,17 @@ input CreatePreUserInput {
 
 input CreateUserInput {
   email: String!
+  lastname: String
+  name: String
   password: String!
+  phone: String
   role: Role
 }
 
 type Dog {
   age: Int!
   breed: String!
+  color: String
   id: ID
   imageUrl: String
   name: String!
@@ -63,6 +82,7 @@ type Dog {
   owner: User
   ownerId: Int!
   size: Size
+  weight: Float
 }
 
 input FindEmailInput {
@@ -78,10 +98,11 @@ enum Gender {
 
 type Mutation {
   addDogToUser(dogId: Int, userId: Int): User
-  createDog(age: Int, breed: String, name: String, ownerId: Int, size: Size): Dog
+  createDog(input: CreateDogInput): Dog
+  createDogs(input: CreateDogsInput): [Dog!]!
   createPreUser(input: CreatePreUserInput): PreUser
   createUser(input: CreateUserInput): User
-  signUser(input: CreateUserInput): AuthResponse
+  signUser(input: SignInUserInput): AuthResponse
   updateUser(input: UpdateUserInput): User
   verifyIfEmailExists(input: FindEmailInput): User
 }
@@ -97,6 +118,7 @@ type Query {
   companyDogs(companyId: Int, search: String): [Dog]
   dogById(id: Int): Dog
   dogs(id: Int): [Dog]
+  dogsByOwner(ownerId: Int): [Dog]
   user: User
   userDogs(userId: Int): [Dog]
   users: [User]
@@ -110,11 +132,18 @@ enum Role {
   USER
 }
 
+input SignInUserInput {
+  email: String!
+  password: String!
+}
+
 """Dog size"""
 enum Size {
+  GIGANTIC
   LARGE
   MEDIUM
   SMALL
+  TOY
 }
 
 input UpdateUserInput {

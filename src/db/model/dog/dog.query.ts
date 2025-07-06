@@ -32,6 +32,24 @@ export const DogById = extendType({
   },
 });
 
+export const DogsByOwner = extendType({
+  type: "Query",
+  definition(t) {
+    t.list.field("dogsByOwner", {
+      type: "Dog",
+      args: {
+        ownerId: "Int",
+      },
+      resolve: (_, { ownerId }, ctx) =>
+        ctx.prisma.dog.findMany({
+          where: {
+            ownerId: ownerId,
+          },
+        }),
+    });
+  },
+});
+
 export const CompanyDogs = extendType({
   type: "Query",
   definition(t) {

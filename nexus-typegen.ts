@@ -14,6 +14,18 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  CreateDogInput: { // input type
+    age: number; // Int!
+    breed: string; // String!
+    color: string; // String!
+    name: string; // String!
+    ownerId: number; // Int!
+    size: NexusGenEnums['Size']; // Size!
+    weight: number; // Float!
+  }
+  CreateDogsInput: { // input type
+    dogs: NexusGenInputs['CreateDogInput'][]; // [CreateDogInput!]!
+  }
   CreatePreUserInput: { // input type
     email: string; // String!
     howManyDogs?: number | null; // Int
@@ -21,11 +33,18 @@ export interface NexusGenInputs {
   }
   CreateUserInput: { // input type
     email: string; // String!
+    lastname?: string | null; // String
+    name?: string | null; // String
     password: string; // String!
+    phone?: string | null; // String
     role?: NexusGenEnums['Role'] | null; // Role
   }
   FindEmailInput: { // input type
     email: string; // String!
+  }
+  SignInUserInput: { // input type
+    email: string; // String!
+    password: string; // String!
   }
   UpdateUserInput: { // input type
     clientOfId?: number | null; // Int
@@ -42,7 +61,7 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
   Gender: "Female" | "Male" | "Other"
   Role: "ADMIN" | "CLIENT" | "OWNER" | "USER"
-  Size: "LARGE" | "MEDIUM" | "SMALL"
+  Size: "GIGANTIC" | "LARGE" | "MEDIUM" | "SMALL" | "TOY"
   UserStatus: "ACTIVE" | "BLOCKED" | "DELETED" | "INACTIVE" | "INCOMPLETE"
 }
 
@@ -74,16 +93,19 @@ export interface NexusGenObjects {
     name: string; // String!
     ownerId: number; // Int!
     phone: string; // String!
+    uuid: string; // String!
   }
   Dog: { // root type
     age: number; // Int!
     breed: string; // String!
+    color?: string | null; // String
     id?: string | null; // ID
     imageUrl?: string | null; // String
     name: string; // String!
     notes?: string | null; // String
     ownerId: number; // Int!
     size?: NexusGenEnums['Size'] | null; // Size
+    weight?: number | null; // Float
   }
   Mutation: {};
   PreUser: { // root type
@@ -144,10 +166,12 @@ export interface NexusGenFieldTypes {
     owner: NexusGenRootTypes['User'] | null; // User
     ownerId: number; // Int!
     phone: string; // String!
+    uuid: string; // String!
   }
   Dog: { // field return type
     age: number; // Int!
     breed: string; // String!
+    color: string | null; // String
     id: string | null; // ID
     imageUrl: string | null; // String
     name: string; // String!
@@ -155,10 +179,12 @@ export interface NexusGenFieldTypes {
     owner: NexusGenRootTypes['User'] | null; // User
     ownerId: number; // Int!
     size: NexusGenEnums['Size'] | null; // Size
+    weight: number | null; // Float
   }
   Mutation: { // field return type
     addDogToUser: NexusGenRootTypes['User'] | null; // User
     createDog: NexusGenRootTypes['Dog'] | null; // Dog
+    createDogs: NexusGenRootTypes['Dog'][]; // [Dog!]!
     createPreUser: NexusGenRootTypes['PreUser'] | null; // PreUser
     createUser: NexusGenRootTypes['User'] | null; // User
     signUser: NexusGenRootTypes['AuthResponse'] | null; // AuthResponse
@@ -175,6 +201,7 @@ export interface NexusGenFieldTypes {
     companyDogs: Array<NexusGenRootTypes['Dog'] | null> | null; // [Dog]
     dogById: NexusGenRootTypes['Dog'] | null; // Dog
     dogs: Array<NexusGenRootTypes['Dog'] | null> | null; // [Dog]
+    dogsByOwner: Array<NexusGenRootTypes['Dog'] | null> | null; // [Dog]
     user: NexusGenRootTypes['User'] | null; // User
     userDogs: Array<NexusGenRootTypes['Dog'] | null> | null; // [Dog]
     users: Array<NexusGenRootTypes['User'] | null> | null; // [User]
@@ -224,10 +251,12 @@ export interface NexusGenFieldTypeNames {
     owner: 'User'
     ownerId: 'Int'
     phone: 'String'
+    uuid: 'String'
   }
   Dog: { // field return type name
     age: 'Int'
     breed: 'String'
+    color: 'String'
     id: 'ID'
     imageUrl: 'String'
     name: 'String'
@@ -235,10 +264,12 @@ export interface NexusGenFieldTypeNames {
     owner: 'User'
     ownerId: 'Int'
     size: 'Size'
+    weight: 'Float'
   }
   Mutation: { // field return type name
     addDogToUser: 'User'
     createDog: 'Dog'
+    createDogs: 'Dog'
     createPreUser: 'PreUser'
     createUser: 'User'
     signUser: 'AuthResponse'
@@ -255,6 +286,7 @@ export interface NexusGenFieldTypeNames {
     companyDogs: 'Dog'
     dogById: 'Dog'
     dogs: 'Dog'
+    dogsByOwner: 'Dog'
     user: 'User'
     userDogs: 'Dog'
     users: 'User'
@@ -286,11 +318,10 @@ export interface NexusGenArgTypes {
       userId?: number | null; // Int
     }
     createDog: { // args
-      age?: number | null; // Int
-      breed?: string | null; // String
-      name?: string | null; // String
-      ownerId?: number | null; // Int
-      size?: NexusGenEnums['Size'] | null; // Size
+      input?: NexusGenInputs['CreateDogInput'] | null; // CreateDogInput
+    }
+    createDogs: { // args
+      input?: NexusGenInputs['CreateDogsInput'] | null; // CreateDogsInput
     }
     createPreUser: { // args
       input?: NexusGenInputs['CreatePreUserInput'] | null; // CreatePreUserInput
@@ -299,7 +330,7 @@ export interface NexusGenArgTypes {
       input?: NexusGenInputs['CreateUserInput'] | null; // CreateUserInput
     }
     signUser: { // args
-      input?: NexusGenInputs['CreateUserInput'] | null; // CreateUserInput
+      input?: NexusGenInputs['SignInUserInput'] | null; // SignInUserInput
     }
     updateUser: { // args
       input?: NexusGenInputs['UpdateUserInput'] | null; // UpdateUserInput
@@ -318,6 +349,9 @@ export interface NexusGenArgTypes {
     }
     dogs: { // args
       id?: number | null; // Int
+    }
+    dogsByOwner: { // args
+      ownerId?: number | null; // Int
     }
     userDogs: { // args
       userId?: number | null; // Int

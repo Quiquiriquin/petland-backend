@@ -1,15 +1,16 @@
 model Company {
     id        Int      @id @default(autoincrement())
+    uuid      String?  @unique @default(uuid())
     name      String
     address   Address?
+    addressId String?
     phone     String
     email     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    addressId String?
     owner     User     @relation("CompanyOwner", fields: [ownerId], references: [id])
     ownerId   Int      @unique
     employees User[]   @relation("CompanyEmployees")
     clients   User[]   @relation("CompanyClients")
     alumni    Dog[]    @relation("CompanyAlumni")
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }

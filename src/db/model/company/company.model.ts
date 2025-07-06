@@ -11,8 +11,9 @@ export const CompanyType = objectType({
     t.id("id");
     t.nonNull.string("name");
     t.nonNull.string("phone");
-    t.int("addressId");
+    t.nonNull.string("uuid");
     t.nonNull.int("ownerId");
+    t.int("addressId");
     t.field("address", {
       type: "Address",
       resolve: (root, args, ctx) =>
