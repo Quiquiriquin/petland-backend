@@ -71,6 +71,7 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  Upload: any
 }
 
 export interface NexusGenObjects {
@@ -189,6 +190,7 @@ export interface NexusGenFieldTypes {
     createUser: NexusGenRootTypes['User'] | null; // User
     signUser: NexusGenRootTypes['AuthResponse'] | null; // AuthResponse
     updateUser: NexusGenRootTypes['User'] | null; // User
+    uploadDogPicture: string | null; // String
     verifyIfEmailExists: NexusGenRootTypes['User'] | null; // User
   }
   PreUser: { // field return type
@@ -274,6 +276,7 @@ export interface NexusGenFieldTypeNames {
     createUser: 'User'
     signUser: 'AuthResponse'
     updateUser: 'User'
+    uploadDogPicture: 'String'
     verifyIfEmailExists: 'User'
   }
   PreUser: { // field return type name
@@ -334,6 +337,10 @@ export interface NexusGenArgTypes {
     }
     updateUser: { // args
       input?: NexusGenInputs['UpdateUserInput'] | null; // UpdateUserInput
+    }
+    uploadDogPicture: { // args
+      dogId?: number | null; // Int
+      file?: NexusGenScalars['Upload'] | null; // Upload
     }
     verifyIfEmailExists: { // args
       input?: NexusGenInputs['FindEmailInput'] | null; // FindEmailInput

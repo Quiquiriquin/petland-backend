@@ -2,6 +2,7 @@ import { ApolloServer } from "@apollo/server";
 import express from "express";
 import { expressMiddleware } from "@apollo/server/express4";
 import { schema } from "./db";
+import { graphqlUploadExpress } from "graphql-upload-ts";
 
 import { createServer } from "http";
 import { AddressInfo } from "net";
@@ -12,15 +13,17 @@ const app = express();
 const httpServer = createServer(app);
 const server = new ApolloServer({
   schema,
+  csrfPrevention: false, // 🚨 NOT recommended for production
   introspection: true,
   plugins: [ApolloServerPluginLandingPageLocalDefault()],
 });
 
-await server.start();
+await server.start(); // 👈 required middleware
 app.use(cors());
 app.use(
   "/graphql",
   express.json(),
+  graphqlUploadExpress(),
   // @ts-expect-error known express type conflict
   expressMiddleware(server, {
     context: ({ req }) => createContext(req),

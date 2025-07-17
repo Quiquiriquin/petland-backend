@@ -1,5 +1,9 @@
 import { enumType, objectType } from "nexus";
 import { Context } from "../../../context";
+import { GraphQLUpload } from "graphql-upload-ts";
+
+export const Upload = GraphQLUpload;
+
 export const UserType = objectType({
   name: "User",
   definition(t) {

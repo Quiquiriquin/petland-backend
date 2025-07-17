@@ -2,12 +2,14 @@ import { PrismaClient, User } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import { ACCESS_SECRET } from "./utils/token.utils";
 import { ClientEnum, ClientType, translateClient } from "./utils/middleware";
+import { s3 } from "./utils/aws";
 const prisma = new PrismaClient();
 
 export type Context = {
   prisma: PrismaClient;
   user?: User;
   client: ClientEnum;
+  s3: any;
 };
 
 export const createContext = async (req: any): Promise<Context> => {
@@ -25,12 +27,13 @@ export const createContext = async (req: any): Promise<Context> => {
     try {
       user = jwt.verify(accessToken, ACCESS_SECRET) as User;
     } catch (e) {
-      console.warn("Invalid access token");
+      console.log("Invalid access token");
     }
   }
   return {
     prisma,
     user,
     client,
+    s3: s3,
   };
 };

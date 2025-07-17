@@ -3,6 +3,7 @@ import { SizeEnum } from "./dog.model";
 import { skip } from "@prisma/client/runtime/library";
 import { Dog } from "@prisma/client";
 import { connect } from "http2";
+import { uploadDogImage } from "../../../resolvers/dog.resolver";
 
 export const CreateDogInput = inputObjectType({
   name: "CreateDogInput",
@@ -85,4 +86,13 @@ export const CreateDogs = mutationField("createDogs", {
 
     return results;
   },
+});
+
+export const UploadDogPicture = mutationField("uploadDogPicture", {
+  type: "String",
+  args: {
+    dogId: "Int",
+    file: "Upload",
+  },
+  resolve: uploadDogImage,
 });
